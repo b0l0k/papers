@@ -1,8 +1,9 @@
-
-Titre:       Eh ! Hook moi ça !  
+Titre:       Analyse du MBR de Vista
 Auteur:      Vincent Bouzon - b0l0k  
 Web:         http://www.c0ding.fr  
-Date:        18 juillet 2007
+Date:        01 août 2008
+
+# Analyse du MBR de Vista #
 
 Encore penché sur Singularity, je tombe par hasard sur un article parlant de Bitlocker et plus particulièrement la protection apporté au niveau du boot.
 
