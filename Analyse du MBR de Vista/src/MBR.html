@@ -1,0 +1,316 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>MBR.bin</title>
+</head>
+<body bgcolor="white">
+<span style="white-space: pre; font-family: FixedSys; color: blue; background: white">
+
+<span style="color:maroon">0000:0600 </span>; Input MD5   : CDDE229B643FA87FAC0AB99FF780AC22
+<span style="color:maroon">0000:0600
+0000:0600 </span><span style="color:gray">; ---------------------------------------------------------------------------
+</span><span style="color:maroon">0000:0600 </span>; File Name   : MBR.bin
+<span style="color:maroon">0000:0600 </span>; Format      : Binary file
+<span style="color:maroon">0000:0600 </span>; Base Address: 0000h Range: 0600h - 0800h Loaded length: 0200h
+<span style="color:maroon">0000:0600
+0000:0600                          .</span>686p
+<span style="color:maroon">0000:0600                          </span>.mmx
+<span style="color:maroon">0000:0600                          </span>.model flat
+<span style="color:maroon">0000:0600
+0000:0600 </span><span style="color:gray">; ===========================================================================
+</span><span style="color:maroon">0000:0600
+0000:0600 </span><span style="color:gray">; Segment type: Pure code
+</span><span style="color:maroon">0000:0600 </span>seg000                   segment byte public 'CODE' use16
+<span style="color:maroon">0000:0600                          </span>assume cs:seg000
+<span style="color:maroon">0000:0600                          </span><span style="color:gray">;org 600h
+</span><span style="color:maroon">0000:0600                          </span>assume es:nothing, ss:nothing, ds:nothing, fs:nothing, gs:nothing
+<span style="color:maroon">0000:0600                          </span><span style="color:navy">xor    ax, ax
+</span><span style="color:maroon">0000:0602                          </span><span style="color:navy">mov    ss, ax
+</span><span style="color:maroon">0000:0604                          </span><span style="color:navy">mov    sp, </span><span style="color:green">7C00h                   </span>; Mise en place de la pile
+<span style="color:maroon">0000:0607                          </span><span style="color:navy">mov    es, ax
+</span><span style="color:maroon">0000:0609                          </span><span style="color:navy">mov    ds, ax                      </span>; ss = es = ds = 0
+<span style="color:maroon">0000:060B                          </span><span style="color:navy">mov    si, </span><span style="color:green">7C00h
+</span><span style="color:maroon">0000:060E                          </span><span style="color:navy">mov    di, </span><span style="color:green">600h
+</span><span style="color:maroon">0000:0611                          </span><span style="color:navy">mov    cx, </span><span style="color:green">200h
+</span><span style="color:maroon">0000:0614                          </span><span style="color:navy">cld
+</span><span style="color:maroon">0000:0615                          </span><span style="color:navy">rep movsb                          </span>; Recopie du MBR en 600h
+<span style="color:maroon">0000:0617                          </span><span style="color:navy">push   ax
+</span><span style="color:maroon">0000:0618                          </span><span style="color:navy">push   </span><span style="color:green">61Ch
+</span><span style="color:maroon">0000:061B                          </span><span style="color:navy">retf                               </span>; Redirection de l'exécution en 61Ch
+<span style="color:maroon">0000:061C                          </span><span style="color:navy">sti
+</span><span style="color:maroon">0000:061D                          </span><span style="color:navy">mov    cx, </span><span style="color:green">4
+</span><span style="color:maroon">0000:0620                          </span><span style="color:navy">mov    bp, offset </span>PartitionTable
+<span style="color:maroon">0000:0623
+0000:0623 </span>FindPartitionBootable<span style="color:navy">:                                      </span><span style="color:green">; CODE XREF: seg000:0630j
+</span><span style="color:maroon">0000:0623                          </span><span style="color:navy">cmp    [bp+</span>PARTITION_DESCRIPTOR.ACTIVE<span style="color:navy">], </span><span style="color:green">0
+</span><span style="color:maroon">0000:0627                          </span><span style="color:navy">jl     short </span>PartitionBootableFound
+<span style="color:maroon">0000:0629                          </span><span style="color:navy">jnz    </span>PrintInvalidPartitionTable
+<span style="color:maroon">0000:062D                          </span><span style="color:navy">add    bp, size </span>PARTITION_DESCRIPTOR
+<span style="color:maroon">0000:0630                          </span><span style="color:navy">loop   </span>FindPartitionBootable       ; Recherche d'une partitition bootable
+<span style="color:maroon">0000:0632                          </span><span style="color:navy">int    </span><span style="color:green">18h                         </span>; Sinon on repasse l'exécution au Bios
+<span style="color:maroon">0000:0634
+0000:0634 </span>PartitionBootableFound<span style="color:navy">:                                     </span><span style="color:green">; CODE XREF: seg000:0627j
+</span><span style="color:maroon">0000:0634                                                             </span><span style="color:green">; seg000:06B0j
+</span><span style="color:maroon">0000:0634                          </span><span style="color:navy">mov    [bp+</span>PARTITION_DESCRIPTOR.ACTIVE<span style="color:navy">], dl
+</span><span style="color:maroon">0000:0637                          </span><span style="color:navy">push   bp
+</span><span style="color:maroon">0000:0638                          </span><span style="color:navy">mov    </span>byte ptr [bp+size PARTITION_DESCRIPTOR+PARTITION_DESCRIPTOR.START_HEAD]<span style="color:navy">, </span><span style="color:green">5
+</span><span style="color:maroon">0000:063C                          </span><span style="color:navy">mov    </span>byte ptr [bp+size PARTITION_DESCRIPTOR+PARTITION_DESCRIPTOR.ACTIVE]<span style="color:navy">, </span><span style="color:green">0
+</span><span style="color:maroon">0000:0640                          </span><span style="color:navy">mov    ah, </span><span style="color:green">41h
+</span><span style="color:maroon">0000:0642                          </span><span style="color:navy">mov    bx, </span><span style="color:green">55AAh
+</span><span style="color:maroon">0000:0645                          </span><span style="color:navy">int    </span><span style="color:green">13h                         </span>; Vérification de la présence de l'extension de l'interruption 13h
+<span style="color:maroon">0000:0647                          </span><span style="color:navy">pop    bp
+</span><span style="color:maroon">0000:0648                          </span><span style="color:navy">jb     short </span>ReadBootSector
+<span style="color:maroon">0000:064A                          </span><span style="color:navy">cmp    bx, </span><span style="color:green">0AA55h
+</span><span style="color:maroon">0000:064E                          </span><span style="color:navy">jnz    short </span>ReadBootSector
+<span style="color:maroon">0000:0650                          </span><span style="color:navy">test   cx, </span><span style="color:green">1
+</span><span style="color:maroon">0000:0654                          </span><span style="color:navy">jz     short </span>ReadBootSector
+<span style="color:maroon">0000:0656                          </span><span style="color:navy">inc    </span>byte ptr [bp+size PARTITION_DESCRIPTOR+PARTITION_DESCRIPTOR.ACTIVE]
+<span style="color:maroon">0000:0659
+0000:0659 </span>ReadBootSector<span style="color:navy">:                                             </span><span style="color:green">; CODE XREF: seg000:0648j
+</span><span style="color:maroon">0000:0659                                                             </span><span style="color:green">; seg000:064Ej ...
+</span><span style="color:maroon">0000:0659                          </span><span style="color:navy">pushad
+</span><span style="color:maroon">0000:065B                          </span><span style="color:navy">cmp    </span>byte ptr [bp+size PARTITION_DESCRIPTOR+PARTITION_DESCRIPTOR.ACTIVE]<span style="color:navy">, </span><span style="color:green">0
+</span><span style="color:maroon">0000:065F                          </span><span style="color:navy">jz     short </span>ReadWithoutExtension
+<span style="color:maroon">0000:0661                          </span><span style="color:navy">push   large </span><span style="color:green">0
+</span><span style="color:maroon">0000:0667                          </span><span style="color:navy">push   large dword ptr [bp+</span><span style="color:green">8</span><span style="color:navy">]
+</span><span style="color:maroon">0000:066B                          </span><span style="color:navy">push   </span><span style="color:green">0
+</span><span style="color:maroon">0000:066E                          </span><span style="color:navy">push   </span><span style="color:green">7C00h
+</span><span style="color:maroon">0000:0671                          </span><span style="color:navy">push   </span><span style="color:green">1
+</span><span style="color:maroon">0000:0674                          </span><span style="color:navy">push   </span><span style="color:green">10h
+</span><span style="color:maroon">0000:0677                          </span><span style="color:navy">mov    ah, </span><span style="color:green">42h
+</span><span style="color:maroon">0000:0679                          </span><span style="color:navy">mov    dl, [bp+</span>PARTITION_DESCRIPTOR.ACTIVE<span style="color:navy">]
+</span><span style="color:maroon">0000:067C                          </span><span style="color:navy">mov    si, sp
+</span><span style="color:maroon">0000:067E                          </span><span style="color:navy">int    </span><span style="color:green">13h                         </span>; Lecture du secteur de boot avec l'extension de l'interruption 13h
+<span style="color:maroon">0000:0680                          </span><span style="color:navy">lahf
+</span><span style="color:maroon">0000:0681                          </span><span style="color:navy">add    sp, </span><span style="color:green">10h
+</span><span style="color:maroon">0000:0684                          </span><span style="color:navy">sahf
+</span><span style="color:maroon">0000:0685                          </span><span style="color:navy">jmp    short </span>EndRead
+<span style="color:maroon">0000:0687 </span><span style="color:gray">; ---------------------------------------------------------------------------
+</span><span style="color:maroon">0000:0687
+0000:0687 </span>ReadWithoutExtension<span style="color:navy">:                                       </span><span style="color:green">; CODE XREF: seg000:065Fj
+</span><span style="color:maroon">0000:0687                          </span><span style="color:navy">mov    ax, </span><span style="color:green">201h
+</span><span style="color:maroon">0000:068A                          </span><span style="color:navy">mov    bx, </span><span style="color:green">7C00h
+</span><span style="color:maroon">0000:068D                          </span><span style="color:navy">mov    dl, [bp+</span>PARTITION_DESCRIPTOR.ACTIVE<span style="color:navy">]
+</span><span style="color:maroon">0000:0690                          </span><span style="color:navy">mov    dh, [bp+</span>PARTITION_DESCRIPTOR.START_HEAD<span style="color:navy">]
+</span><span style="color:maroon">0000:0693                          </span><span style="color:navy">mov    cl, [bp+</span>PARTITION_DESCRIPTOR.START_SEC<span style="color:navy">]
+</span><span style="color:maroon">0000:0696                          </span><span style="color:navy">mov    ch, [bp+</span>PARTITION_DESCRIPTOR.START_CYL<span style="color:navy">]
+</span><span style="color:maroon">0000:0699                          </span><span style="color:navy">int    </span><span style="color:green">13h                         </span>; DISK - READ SECTORS INTO MEMORY
+<span style="color:maroon">0000:0699                                                             </span>; AL = number of sectors to read, CH = track, CL = sector
+<span style="color:maroon">0000:0699                                                             </span>; DH = head, DL = drive, ES:BX -&gt; buffer to fill
+<span style="color:maroon">0000:0699                                                             </span>; Return: CF set on error, AH = status, AL = number of sectors read
+<span style="color:maroon">0000:069B
+0000:069B </span>EndRead<span style="color:navy">:                                                    </span><span style="color:green">; CODE XREF: seg000:0685j
+</span><span style="color:maroon">0000:069B                          </span><span style="color:navy">popad
+</span><span style="color:maroon">0000:069D                          </span><span style="color:navy">jnb    short </span>CheckBootSector
+<span style="color:maroon">0000:069F                          </span><span style="color:navy">dec    </span>byte ptr [bp+size PARTITION_DESCRIPTOR+PARTITION_DESCRIPTOR.START_HEAD]
+<span style="color:maroon">0000:06A2                          </span><span style="color:navy">jnz    </span>ResetDisk
+<span style="color:maroon">0000:06A6                          </span><span style="color:navy">cmp    [bp+</span>PARTITION_DESCRIPTOR.ACTIVE<span style="color:navy">], </span><span style="color:green">80h
+</span><span style="color:maroon">0000:06AA                          </span><span style="color:navy">jz     </span>PrintErrorLoadingOS
+<span style="color:maroon">0000:06AE                          </span><span style="color:navy">mov    dl, </span><span style="color:green">80h
+</span><span style="color:maroon">0000:06B0                          </span><span style="color:navy">jmp    short </span>PartitionBootableFound
+<span style="color:maroon">0000:06B2 </span><span style="color:gray">; ---------------------------------------------------------------------------
+</span><span style="color:maroon">0000:06B2
+0000:06B2 </span>ResetDisk<span style="color:navy">:                                                  </span><span style="color:green">; CODE XREF: seg000:06A2j
+</span><span style="color:maroon">0000:06B2                          </span><span style="color:navy">push   bp
+</span><span style="color:maroon">0000:06B3                          </span><span style="color:navy">xor    ah, ah
+</span><span style="color:maroon">0000:06B5                          </span><span style="color:navy">mov    dl, [bp+</span>PARTITION_DESCRIPTOR.ACTIVE<span style="color:navy">]
+</span><span style="color:maroon">0000:06B8                          </span><span style="color:navy">int    </span><span style="color:green">13h                         </span>; DISK - RESET DISK SYSTEM
+<span style="color:maroon">0000:06B8                                                             </span>; DL = drive (if bit 7 is set both hard disks and floppy disks reset)
+<span style="color:maroon">0000:06BA                          </span><span style="color:navy">pop    bp
+</span><span style="color:maroon">0000:06BB                          </span><span style="color:navy">jmp    short </span>ReadBootSector
+<span style="color:maroon">0000:06BD </span><span style="color:gray">; ---------------------------------------------------------------------------
+</span><span style="color:maroon">0000:06BD
+0000:06BD </span>CheckBootSector<span style="color:navy">:                                            </span><span style="color:green">; CODE XREF: seg000:069Dj
+</span><span style="color:maroon">0000:06BD                          </span><span style="color:navy">cmp    word ptr ds:</span><span style="color:green">7DFEh</span><span style="color:navy">, </span><span style="color:green">0AA55h
+</span><span style="color:maroon">0000:06C3                          </span><span style="color:navy">jnz    short </span>PrintMissingOS
+<span style="color:maroon">0000:06C5                          </span><span style="color:navy">push   word ptr [bp+</span>PARTITION_DESCRIPTOR.ACTIVE<span style="color:navy">]
+</span><span style="color:maroon">0000:06C8
+0000:06C8 </span>ActivateA20<span style="color:navy">:
+</span><span style="color:maroon">0000:06C8                          </span><span style="color:navy">call   </span>WaitKeyboadIsEmplty
+<span style="color:maroon">0000:06CB                          </span><span style="color:navy">jnz    </span>CheckTPM
+<span style="color:maroon">0000:06CF                          </span><span style="color:navy">mov    al, </span><span style="color:green">0D1h                    </span>; D1: Write Output Port: next byte written to port 60h is placed
+<span style="color:maroon">0000:06CF                                                             </span>;  in the 8042 output port (which is inaccessible to the data bus)
+<span style="color:maroon">0000:06CF                                                             </span>;
+<span style="color:maroon">0000:06CF                                                             </span>;         |7|6|5|4|3|2|1|0|  8042 Output Port
+<span style="color:maroon">0000:06CF                                                             </span>;          | | | | | | | `---- system reset line
+<span style="color:maroon">0000:06CF                                                             </span>;          | | | | | | `----- gate A20
+<span style="color:maroon">0000:06CF                                                             </span>;          | | | | `-------- undefined
+<span style="color:maroon">0000:06CF                                                             </span>;          | | | `--------- output buffer full
+<span style="color:maroon">0000:06CF                                                             </span>;          | | `---------- input buffer empty
+<span style="color:maroon">0000:06CF                                                             </span>;          | `----------- keyboard clock (output)
+<span style="color:maroon">0000:06CF                                                             </span>;          `------------ keyboard data (output)
+<span style="color:maroon">0000:06D1                          </span><span style="color:navy">out    </span><span style="color:green">64h</span><span style="color:navy">, al                     </span>; AT Keyboard controller 8042.
+<span style="color:maroon">0000:06D3                          </span><span style="color:navy">call   </span>WaitKeyboadIsEmplty
+<span style="color:maroon">0000:06D6                          </span><span style="color:navy">mov    al, </span><span style="color:green">0DFh                    </span>; DFh = 11011111b
+<span style="color:maroon">0000:06D8                          </span><span style="color:navy">out    </span><span style="color:green">60h</span><span style="color:navy">, al                     </span>; AT Keyboard controller 8042.
+<span style="color:maroon">0000:06DA                          </span><span style="color:navy">call   </span>WaitKeyboadIsEmplty
+<span style="color:maroon">0000:06DD                          </span><span style="color:navy">mov    al, </span><span style="color:green">0FFh                    </span>; F0h-FFh : Pulse Output Port
+<span style="color:maroon">0000:06DF                          </span><span style="color:navy">out    </span><span style="color:green">64h</span><span style="color:navy">, al                     </span>; AT Keyboard controller 8042.
+<span style="color:maroon">0000:06DF                                                             </span>; Reset the keyboard and start internal diagnostics
+<span style="color:maroon">0000:06E1                          </span><span style="color:navy">call   </span>WaitKeyboadIsEmplty
+<span style="color:maroon">0000:06E4
+0000:06E4 </span>CheckTPM<span style="color:navy">:                                                   </span><span style="color:green">; CODE XREF: seg000:06CBj
+</span><span style="color:maroon">0000:06E4                          </span><span style="color:navy">mov    ax, </span><span style="color:green">0BB00h
+</span><span style="color:maroon">0000:06E7                          </span><span style="color:navy">int    </span><span style="color:green">1Ah                         </span>; TCG_StatusCheck
+<span style="color:maroon">0000:06E9                          </span><span style="color:navy">and    eax, eax
+</span><span style="color:maroon">0000:06EC                          </span><span style="color:navy">jnz    short </span>ExecuteBootSector
+<span style="color:maroon">0000:06EE                          </span><span style="color:navy">cmp    ebx, </span><span style="color:green">'APCT'
+</span><span style="color:maroon">0000:06F5                          </span><span style="color:navy">jnz    short </span>ExecuteBootSector
+<span style="color:maroon">0000:06F7                          </span><span style="color:navy">cmp    cx, </span><span style="color:#ff8000">102h
+</span><span style="color:maroon">0000:06FB                          </span><span style="color:navy">jb     short </span>ExecuteBootSector
+<span style="color:maroon">0000:06FD
+0000:06FD </span>HashBootSector<span style="color:navy">:
+</span><span style="color:maroon">0000:06FD                          </span><span style="color:navy">push   large </span><span style="color:green">0BB07h
+</span><span style="color:maroon">0000:0703                          </span><span style="color:navy">push   large </span><span style="color:green">200h
+</span><span style="color:maroon">0000:0709                          </span><span style="color:navy">push   large </span><span style="color:green">8
+</span><span style="color:maroon">0000:070F                          </span><span style="color:navy">push   ebx
+</span><span style="color:maroon">0000:0711                          </span><span style="color:navy">push   ebx
+</span><span style="color:maroon">0000:0713                          </span><span style="color:navy">push   ebp
+</span><span style="color:maroon">0000:0715                          </span><span style="color:navy">push   large </span><span style="color:green">0
+</span><span style="color:maroon">0000:071B                          </span><span style="color:navy">push   large </span><span style="color:green">7C00h
+</span><span style="color:maroon">0000:0721                          </span><span style="color:navy">popad
+</span><span style="color:maroon">0000:0723                          </span><span style="color:navy">push   </span><span style="color:green">0
+</span><span style="color:maroon">0000:0726                          </span><span style="color:navy">pop    es
+</span><span style="color:maroon">0000:0727                          </span><span style="color:navy">int    </span><span style="color:green">1Ah                         </span>; TCG_CompactHashLogExtendEvent
+<span style="color:maroon">0000:0727                                                             </span>;
+<span style="color:maroon">0000:0727                                                             </span>; AX = BB07h.
+<span style="color:maroon">0000:0727                                                             </span>; ES:DI = segment:offset of buffer to be hashed. Physical location of buffer starts at 16*ES+DI.
+<span style="color:maroon">0000:0727                                                             </span>; ECX = length of buffer to be hashed. Lengths of 0 through 32K must be supported.
+<span style="color:maroon">0000:0727                                                             </span>; EDX = PCR number that that hash must be extended into.
+<span style="color:maroon">0000:0727                                                             </span>; ESI = an informative value that must be stored in the event log.
+<span style="color:maroon">0000:0727                                                             </span>; EBX = 41504354h.
+<span style="color:maroon">0000:0727                                                             </span>; ECX = 0h.
+<span style="color:maroon">0000:0727                                                             </span>; EDX = 0h.
+<span style="color:maroon">0000:0729
+0000:0729 </span>ExecuteBootSector<span style="color:navy">:                                          </span><span style="color:green">; CODE XREF: seg000:06ECj
+</span><span style="color:maroon">0000:0729                                                             </span><span style="color:green">; seg000:06F5j ...
+</span><span style="color:maroon">0000:0729                          </span><span style="color:navy">pop    dx
+</span><span style="color:maroon">0000:072A                          </span><span style="color:navy">xor    dh, dh
+</span><span style="color:maroon">0000:072C                          </span><span style="color:navy">jmp    far ptr </span><span style="background:red"><span style="color:navy">0:7C00h</span></span>
+<span style="color:maroon">0000:072C </span><span style="color:gray">; ---------------------------------------------------------------------------
+</span><span style="color:olive">0000:0731                          </span><span style="color:navy">db </span><span style="color:#008040">0CDh </span><span style="color:gray">; -
+</span><span style="color:olive">0000:0732                          </span><span style="color:navy">db  </span><span style="color:#008040">18h
+</span><span style="color:maroon">0000:0733 </span><span style="color:gray">; ---------------------------------------------------------------------------
+</span><span style="color:maroon">0000:0733
+0000:0733 </span>PrintMissingOS<span style="color:navy">:                                             </span><span style="color:green">; CODE XREF: seg000:06C3j
+</span><span style="color:maroon">0000:0733                          </span><span style="color:navy">mov    al, ds:</span>MissingOS
+<span style="color:maroon">0000:0736                          </span><span style="color:navy">jmp    short </span>PrintString
+<span style="color:maroon">0000:0738 </span><span style="color:gray">; ---------------------------------------------------------------------------
+</span><span style="color:maroon">0000:0738
+0000:0738 </span>PrintErrorLoadingOS<span style="color:navy">:                                        </span><span style="color:green">; CODE XREF: seg000:06AAj
+</span><span style="color:maroon">0000:0738                          </span><span style="color:navy">mov    al, ds:</span>ErrorLoadingOS
+<span style="color:maroon">0000:073B                          </span><span style="color:navy">jmp    short </span>PrintString
+<span style="color:maroon">0000:073D </span><span style="color:gray">; ---------------------------------------------------------------------------
+</span><span style="color:maroon">0000:073D
+0000:073D </span>PrintInvalidPartitionTable<span style="color:navy">:                                 </span><span style="color:green">; CODE XREF: seg000:0629j
+</span><span style="color:maroon">0000:073D                          </span><span style="color:navy">mov    al, ds:</span>InvalidPartition
+<span style="color:maroon">0000:0740
+0000:0740 </span>PrintString<span style="color:navy">:                                                </span><span style="color:green">; CODE XREF: seg000:0736j
+</span><span style="color:maroon">0000:0740                                                             </span><span style="color:green">; seg000:073Bj
+</span><span style="color:maroon">0000:0740                          </span><span style="color:navy">xor    ah, ah                      </span>; ax = Adresse de la chaine - 700h
+<span style="color:maroon">0000:0742                          </span><span style="color:navy">add    ax, </span><span style="color:green">700h
+</span><span style="color:maroon">0000:0745                          </span><span style="color:navy">mov    si, ax
+</span><span style="color:maroon">0000:0747
+0000:0747 </span>PrintChar<span style="color:navy">:                                                  </span><span style="color:green">; CODE XREF: seg000:0753j
+</span><span style="color:maroon">0000:0747                          </span><span style="color:navy">lodsb
+</span><span style="color:maroon">0000:0748
+0000:0748 </span>InfiniteLoop<span style="color:navy">:                                               </span><span style="color:green">; CODE XREF: seg000:074Aj
+</span><span style="color:maroon">0000:0748                          </span><span style="color:navy">cmp    al, </span><span style="color:green">0
+</span><span style="color:maroon">0000:074A                          </span><span style="color:navy">jz     short </span>InfiniteLoop
+<span style="color:maroon">0000:074C                          </span><span style="color:navy">mov    bx, </span><span style="color:green">7
+</span><span style="color:maroon">0000:074F                          </span><span style="color:navy">mov    ah, </span><span style="color:green">0Eh
+</span><span style="color:maroon">0000:0751                          </span><span style="color:navy">int    </span><span style="color:green">10h                         </span>; - VIDEO - WRITE CHARACTER AND ADVANCE CURSOR (TTY WRITE)
+<span style="color:maroon">0000:0751                                                             </span>; AL = character, BH = display page (alpha modes)
+<span style="color:maroon">0000:0751                                                             </span>; BL = foreground color (graphics modes)
+<span style="color:maroon">0000:0753                          </span><span style="color:navy">jmp    short </span>PrintChar
+<span style="color:black">0000:0755
+0000:0755 </span><span style="color:gray">; =============== S U B R O U T I N E =======================================
+</span><span style="color:black">0000:0755
+0000:0755
+0000:0755 </span>WaitKeyboadIsEmplty      proc near                          <span style="color:green">; CODE XREF: seg000:ActivateA20p
+</span><span style="color:black">0000:0755                                                             </span><span style="color:green">; seg000:06D3p ...
+</span><span style="color:black">0000:0755                          </span><span style="color:navy">sub    cx, cx
+</span><span style="color:black">0000:0757
+0000:0757 </span><span style="color:navy">loc_757:                                                    </span><span style="color:green">; CODE XREF: WaitKeyboadIsEmplty+8j
+</span><span style="color:black">0000:0757                          </span><span style="color:navy">in     al, </span><span style="color:green">64h                     </span>; 8042 Status Register (port 64h read)
+<span style="color:black">0000:0757                                                             </span>;
+<span style="color:black">0000:0757                                                             </span>; |7|6|5|4|3|2|1|0|  8042 Status Register
+<span style="color:black">0000:0757                                                             </span>;  | | | | | | | `---- output register (60h) has data for system
+<span style="color:black">0000:0757                                                             </span>;  | | | | | | `----- input register (60h/64h) has data for 8042
+<span style="color:black">0000:0757                                                             </span>;  | | | | | `------ system flag (set to 0 after power on reset)
+<span style="color:black">0000:0757                                                             </span>;  | | | | `------- data in input register is command (1) or data (0)
+<span style="color:black">0000:0757                                                             </span>;  | | | `-------- 1=keyboard enabled, 0=keyboard disabled (via switch)
+<span style="color:black">0000:0757                                                             </span>;  | | `--------- 1=transmit timeout (data transmit not complete)
+<span style="color:black">0000:0757                                                             </span>;  | `---------- 1=receive timeout (data transmit not complete)
+<span style="color:black">0000:0757                                                             </span>;  `----------- 1=even parity rec'd, 0=odd parity rec'd (should be odd)
+<span style="color:black">0000:0759                          </span><span style="color:navy">jmp    short $+</span><span style="color:green">2
+</span><span style="color:black">0000:075B                          </span><span style="color:navy">and    al, </span><span style="color:green">2
+</span><span style="color:black">0000:075D                          </span><span style="color:navy">loopne loc_757
+</span><span style="color:black">0000:075F                          </span><span style="color:navy">and    al, </span><span style="color:green">2
+</span><span style="color:black">0000:0761                          </span><span style="color:navy">retn
+</span><span style="color:black">0000:0761 </span>WaitKeyboadIsEmplty      endp
+<span style="color:black">0000:0761
+0000:0761 </span><span style="color:gray">; ---------------------------------------------------------------------------
+0000:0762 </span>aInvalidPartition        <span style="color:navy">db 'Invalid partition table',0
+</span><span style="color:gray">0000:077A </span>aErrorLoadingOS          <span style="color:navy">db 'Error loading operating system',0
+</span><span style="color:gray">0000:0799 </span>aMissingOperation        <span style="color:navy">db 'Missing operating system',0
+</span><span style="color:olive">0000:07B2                          </span><span style="color:navy">db    </span><span style="color:#008040">0
+</span><span style="color:olive">0000:07B3                          </span><span style="color:navy">db    </span><span style="color:#008040">0
+</span><span style="color:olive">0000:07B4                          </span><span style="color:navy">db    </span><span style="color:#008040">0                            </span>; Adresse des chaines - 700h
+<span style="color:gray">0000:07B5 </span>InvalidPartition         <span style="color:navy">db </span><span style="color:#008040">62h                             </span><span style="color:#8080ff">; DATA XREF: seg000:PrintInvalidPartitionTabler
+</span><span style="color:gray">0000:07B6 </span>ErrorLoadingOS           <span style="color:navy">db </span><span style="color:#008040">7Ah                             </span><span style="color:#8080ff">; DATA XREF: seg000:PrintErrorLoadingOSr
+</span><span style="color:gray">0000:07B7 </span>MissingOS                <span style="color:navy">db </span><span style="color:#008040">99h                             </span><span style="color:#8080ff">; DATA XREF: seg000:PrintMissingOSr
+</span><span style="color:olive">0000:07B8                          </span><span style="color:navy">db  </span><span style="color:#008040">42h </span><span style="color:gray">; B
+</span><span style="color:olive">0000:07B9                          </span><span style="color:navy">db  </span><span style="color:#008040">73h </span><span style="color:gray">; s
+</span><span style="color:olive">0000:07BA                          </span><span style="color:navy">db  </span><span style="color:#008040">51h </span><span style="color:gray">; Q
+</span><span style="color:olive">0000:07BB                          </span><span style="color:navy">db </span><span style="color:#008040">0C2h </span><span style="color:gray">; -
+</span><span style="color:olive">0000:07BC                          </span><span style="color:navy">db    </span><span style="color:#008040">0
+</span><span style="color:olive">0000:07BD                          </span><span style="color:navy">db    </span><span style="color:#008040">0
+</span><span style="color:gray">0000:07BE </span>PartitionTable           <span style="color:navy">db </span><span style="color:#008040">80h                             </span><span style="color:gray">; ACTIVE
+0000:07BE                                                             </span><span style="color:#8080ff">; DATA XREF: seg000:0620o
+</span><span style="color:gray">0000:07BE                          </span><span style="color:navy">db </span><span style="color:#008040">20h                             </span><span style="color:gray">; START_HEAD
+0000:07BE                          </span><span style="color:navy">db </span><span style="color:#008040">21h                             </span><span style="color:gray">; START_SEC
+0000:07BE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; START_CYL
+0000:07BE                          </span><span style="color:navy">db </span><span style="color:#008040">7                               </span><span style="color:gray">; TYPE
+0000:07BE                          </span><span style="color:navy">db </span><span style="color:#008040">0FEh                            </span><span style="color:gray">; END_HEAD
+0000:07BE                          </span><span style="color:navy">db </span><span style="color:#008040">0FFh                            </span><span style="color:gray">; END_SEC
+0000:07BE                          </span><span style="color:navy">db </span><span style="color:#008040">0FFh                            </span><span style="color:gray">; END_CYL
+0000:07BE                          </span><span style="color:navy">dd </span><span style="color:#008040">800h                            </span><span style="color:gray">; START
+0000:07BE                          </span><span style="color:navy">dd </span><span style="color:#008040">19000000h                       </span><span style="color:gray">; SIZE
+0000:07CE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; ACTIVE
+0000:07CE                          </span><span style="color:navy">db </span><span style="color:#008040">0FEh                            </span><span style="color:gray">; START_HEAD
+0000:07CE                          </span><span style="color:navy">db </span><span style="color:#008040">0FFh                            </span><span style="color:gray">; START_SEC
+0000:07CE                          </span><span style="color:navy">db </span><span style="color:#008040">0FFh                            </span><span style="color:gray">; START_CYL
+0000:07CE                          </span><span style="color:navy">db </span><span style="color:#008040">7                               </span><span style="color:gray">; TYPE
+0000:07CE                          </span><span style="color:navy">db </span><span style="color:#008040">0FEh                            </span><span style="color:gray">; END_HEAD
+0000:07CE                          </span><span style="color:navy">db </span><span style="color:#008040">0FFh                            </span><span style="color:gray">; END_SEC
+0000:07CE                          </span><span style="color:navy">db </span><span style="color:#008040">0FFh                            </span><span style="color:gray">; END_CYL
+0000:07CE                          </span><span style="color:navy">dd </span><span style="color:#008040">19000800h                       </span><span style="color:gray">; START
+0000:07CE                          </span><span style="color:navy">dd </span><span style="color:#008040">21385000h                       </span><span style="color:gray">; SIZE
+0000:07DE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; ACTIVE
+0000:07DE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; START_HEAD
+0000:07DE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; START_SEC
+0000:07DE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; START_CYL
+0000:07DE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; TYPE
+0000:07DE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; END_HEAD
+0000:07DE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; END_SEC
+0000:07DE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; END_CYL
+0000:07DE                          </span><span style="color:navy">dd </span><span style="color:#008040">0                               </span><span style="color:gray">; START
+0000:07DE                          </span><span style="color:navy">dd </span><span style="color:#008040">0                               </span><span style="color:gray">; SIZE
+0000:07EE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; ACTIVE
+0000:07EE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; START_HEAD
+0000:07EE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; START_SEC
+0000:07EE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; START_CYL
+0000:07EE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; TYPE
+0000:07EE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; END_HEAD
+0000:07EE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; END_SEC
+0000:07EE                          </span><span style="color:navy">db </span><span style="color:#008040">0                               </span><span style="color:gray">; END_CYL
+0000:07EE                          </span><span style="color:navy">dd </span><span style="color:#008040">0                               </span><span style="color:gray">; START
+0000:07EE                          </span><span style="color:navy">dd </span><span style="color:#008040">0                               </span><span style="color:gray">; SIZE
+0000:07FE                          </span><span style="color:navy">dw </span><span style="color:#008040">0AA55h
+</span><span style="color:gray">0000:07FE </span>seg000                   ends
+<span style="color:gray">0000:07FE
+0000:07FE
+0000:07FE                          </span>end
+</span></body></html>
