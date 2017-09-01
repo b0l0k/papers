@@ -66,7 +66,7 @@ typedef PROCESSENTRY32 * PPROCESSENTRY32;
 typedef PROCESSENTRY32 * LPPROCESSENTRY32;
 ```
 Maintenant qu’il est possible d’utiliser OpenProcess, il va falloir mettre en place notre routine dans sa mémoire. Nous utiliserons pour cela VirtualAllocEx et WriteProcessMemory.
-```
+```c++
 LPVOID VirtualAllocEx( //Renvoi l'adresse de la mémoire qui à été allouée.
   HANDLE hProcess, //Handle sur le processus où la mémoire sera allouée.
   LPVOID lpAddress, //Pointeur spécifiant l'adresse à laquelle nous voulons alloué la mémoire. Si c'est NULL il choisira par lui meme.
