@@ -14,7 +14,7 @@ Avant d’expliquer en détail le procédé très astucieux employé par cette p
 Cette API est présente sous Windows NT, 2000, XP, Vista semble-t-il. Comme son nom l’indique celle-ci permet de créer un thread dans un autre processus.  
 Son prototype:
 
-```
+```c++
 HANDLE WINAPI CreateRemoteThread( //Renvoi un Handle sur le thread créé.
   HANDLE hProcess, //Handle sur le processus cible.
   LPSECURITY_ATTRIBUTES lpThreadAttributes, //Pointeur sur un déscripteur de sécurité choisi pour le thread
@@ -27,7 +27,7 @@ HANDLE WINAPI CreateRemoteThread( //Renvoi un Handle sur le thread créé.
 ```
 Comme on peut le constater, il est nécessaire d’avoir un HANDLE sur le processus cible et une routine chargée dans la mémoire de ce dernier.
 Il nous faudra donc utiliser OpenProcess dont voilà le prototype:
-```
+```c++
 HANDLE OpenProcess(
   DWORD dwDesiredAccess, //L'accès demandé au processus.
   BOOL bInheritHandle, //Bool pour déterminer si le Handle retourné peut être hérité.
@@ -35,14 +35,14 @@ HANDLE OpenProcess(
 );
 ```
 Comme expliqué précédemment, ce procédé nécessite l’id du processus cible. Windows met à notre disposition une API nommée CreateToolhelp32Snapshot permettant la capture d’une information demandée.
-```
+```c++
 HANDLE WINAPI CreateToolhelp32Snapshot(
   DWORD dwFlags, //Détermine l'information demandé, dans notre cas TH32CS_SNAPPROCESS
   DWORD th32ProcessID //Argument pour cette information demandé. Inutile pour nous.
 );
 ```
 Elle retourne un handle sur un snapshot que nous allons parcourir avec Process32First puis Process32Next. Les prototypes sont similaires.
-```
+```c++
 BOOL WINAPI Process32First(
   HANDLE hSnapshot, //Handle de notre snapshot
   LPPROCESSENTRY32 lppe //Pointeur sur une structure de type PROCESSENTRY32.
@@ -138,7 +138,7 @@ Premièrement, trouver une instruction *mov [reg1],reg2*. En parcourant un peu l
 //Edi: 111
 ```
 En clair, il nous faudra trouver un Opcode 0×89 suivi d’un ModR/M avec les bits de mod à 00 ou 01 ( il nous faudra compenser l’offset ) et nous assurer que Ev soit différent de Gv.
-```
+```c++
 LPBYTE ValidMov( LPBYTE* address , LPBYTE offset, LPBYTE regs)
 {
  
@@ -240,7 +240,7 @@ if(SuspendThread(hThread) == -1)goto exit;
     if(!SetThreadContext(hThread,&Context))goto exit;      //C'est parti ....
 ```
 Il faut vérifier si notre thread est bloqué à notre autolock, rien de plus simple :
-```
+```c++
 void WaitEip(HANDLE hThread, DWORD Eip)
 {
     CONTEXT Context;
