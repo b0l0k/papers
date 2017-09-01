@@ -1,0 +1,32 @@
+MUI_386_OBJECTS=
+
+386_OBJECTS= \
+    $(_OBJ_DIR)\i386\shadowmemorydriver.obj \
+    $(_OBJ_DIR)\i386\interrupt.obj \
+    $(_OBJ_DIR)\i386\process.obj \
+    $(_OBJ_DIR)\i386\pagefaulthandler.obj
+
+MUI_IA64_OBJECTS=
+
+IA64_OBJECTS= \
+    $(_OBJ_DIR)\ia64\shadowmemorydriver.obj \
+    $(_OBJ_DIR)\ia64\interrupt.obj \
+    $(_OBJ_DIR)\ia64\process.obj \
+    $(_OBJ_DIR)\ia64\pagefaulthandler.obj
+
+MUI_AMD64_OBJECTS=
+
+AMD64_OBJECTS= \
+    $(_OBJ_DIR)\amd64\shadowmemorydriver.obj \
+    $(_OBJ_DIR)\amd64\interrupt.obj \
+    $(_OBJ_DIR)\amd64\process.obj \
+    $(_OBJ_DIR)\amd64\pagefaulthandler.obj
+
+MUI_ARM_OBJECTS=
+
+ARM_OBJECTS= \
+    $(_OBJ_DIR)\arm\shadowmemorydriver.obj \
+    $(_OBJ_DIR)\arm\interrupt.obj \
+    $(_OBJ_DIR)\arm\process.obj \
+    $(_OBJ_DIR)\arm\pagefaulthandler.obj
+

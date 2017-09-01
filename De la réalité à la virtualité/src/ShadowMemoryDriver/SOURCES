@@ -1,0 +1,5 @@
+TARGETNAME=ShadowMemoryDriver
+TARGETPATH=./
+TARGETTYPE=DRIVER
+
+SOURCES= ShadowMemoryDriver.c Interrupt.c Process.c PageFaultHandler.c

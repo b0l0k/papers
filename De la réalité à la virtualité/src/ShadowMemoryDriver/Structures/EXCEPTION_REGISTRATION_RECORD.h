@@ -1,0 +1,29 @@
+/* 
+ Copyright (c) FRET.  All rights reserved.
+
+File Name : EXCEPTION_REGISTRATION_RECORD.h
+
+Abstract:
+Exception Registration Record structure.
+
+Author: FRET ( www.binary-reverser.org)
+Documented by : Neitsa
+
+Version : 04
+Last Update : 23-Aug-2006 
+*/
+
+#ifndef _EXCEPTION_REGISTRATION_RECORD_H_INCLUDED
+#define _EXCEPTION_REGISTRATION_RECORD_H_INCLUDED
+
+#ifndef EXCEPTION_REGISTRATION_RECORD_INCLUDED
+#define EXCEPTION_REGISTRATION_RECORD_INCLUDED
+
+typedef struct _EXCEPTION_REGISTRATION_RECORD
+{
+	struct _EXCEPTION_REGISTRATION_RECORD *	Next;		//+0x000
+	PVOID	Handler;									//+0x004
+} EXCEPTION_REGISTRATION_RECORD, *PEXCEPTION_REGISTRATION_RECORD, **PPEXCEPTION_REGISTRATION_RECORD;
+
+#endif //_INCLUDED
+#endif //_H_INCLUDED
