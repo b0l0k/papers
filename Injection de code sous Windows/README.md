@@ -193,7 +193,7 @@ LPBYTE ValidMov( LPBYTE* address , LPBYTE offset, LPBYTE regs)
 ```
 Enfin nous, maintenant que nous avons les instructions nécessaires permettant une écriture sécurisé. Nous allons écrire notre routine au dessus de la pile du Thread cible.
 Il nous faudra avant tout placer l’adresse de notre JMP $ pour le RET dû au passage dans notre MOV :
-```
+```c++
 if(SuspendThread(hThread) == -1)goto exit;
  
     CONTEXT Context;
