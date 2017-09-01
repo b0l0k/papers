@@ -1,0 +1,5 @@
+TARGETNAME=HookWithInt
+TARGETPATH=./
+TARGETTYPE=DRIVER
+
+SOURCES= HookWithInt.c Interrupt.c
