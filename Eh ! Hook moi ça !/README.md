@@ -81,12 +81,12 @@ Le principe de la technique est assez simple : mettre un breakpoint au début de
 
 Nous devrons donc modifier aussi la routine de gestion de l’exception. Je vous conseille de vous rendre dans mon article précédent si vous n’avez pas idée de comment hooker une routine de gestion d’exception.  
 
-*Qu’est ce que nous devons faire ?*
+### Qu’est ce que nous devons faire ? ###
 
 1. Tout d’abord remplacer la routine par la notre
 2. Ensuite paramétrer notre breakpoint
 
-*Comment remplacer la routine ?*  
+### Comment remplacer la routine ? ###
 
 J’ai déjà détaillé le hook de routine de gestion d’exception dans mon article précédent (De la réalité a la virtualité … 1/2) donc je vous laisse relire la partie traitant de la technique utilisé.
 
@@ -138,7 +138,7 @@ Is_Other:
  
 	; Cas d'exception ne nous concernant pas ...
 ```
-*Qu’est ce que nous devons faire une fois ces cas reconnus ?*
+### Qu’est ce que nous devons faire une fois ces cas reconnus ? ###
 
 L’exception à été généré par la protection des registres DRx : 
 
@@ -207,7 +207,7 @@ Une petite chose qui peut paraitre anodine et louche mais qui a son importance �
 
 A cette instruction, nous somme dans le cas où l’exception à été généré par la protection GD mais nous n’avons pas demandé de la désactiver. Or si nous la réactivons mais que nous retournons sur l’instruction qui tentai l’accès a un registre DRx, ca recommencera sans fin … En étudiant les instructions possibles pour avoir accès a ces registres nous trouvons qu’elles sont toutes constitué d’un opcode de 2 octets + 1 octet pour le ModR/M. C’est pour cela que nous ajoutons 3 à l’adresse de retour.
 
-*Et comment on fait pour arrêter ?*
+### Et comment on fait pour arrêter ? ###
 
 Première chose à faire, désactiver la protection GD pour cela il suffit donc comme dit précédemment de mettre notre booléen global a 1 et délibérément générer une exception par accès a un registre DRx.
 Ensuite désactivé notre breakpoint pour enfin remettre l’ancienne routine.
