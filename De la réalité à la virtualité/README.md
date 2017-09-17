@@ -20,7 +20,7 @@ Tout ça pour annoncer le sujet de ce petit article. Naviguant sur le Web je tom
 Oui je suis en retard :) mais mieux vaut tard que jamais. La technique proposée par Sherri Sparks et Jamie Butler est intitulée Virtual memory Subversion.
 
 
- ## I. Relations entre mémoire physique et mémoire virtuelle ##
+## I. Relations entre mémoire physique et mémoire virtuelle ##
 
 Pour commencer la mémoire physique est découpée en bloc appelés cadres et la mémoire virtuelle découpée par blocs de même tailles appelés pages.  
 Sous Windows les tailles peuvent être de 4Ko ou 4Mo par blocs. Pour que le processeur sache à quelle cadre fait référence une certaine page, il utilise un système structuré par des PDE et PTE.  
