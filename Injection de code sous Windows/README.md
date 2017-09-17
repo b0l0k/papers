@@ -1,7 +1,10 @@
-Titre:       Injection de code sous Windows|  
-Auteur:      Vincent Bouzon - b0l0k  
-Web:         http://www.c0ding.fr  
-Date:        27 avril 2007
+---
+layout: post
+title: Injection de code sous Windows
+author: Vincent Bouzon - b0l0k  
+tags : injection windows
+date: 2007-04-27
+---
 
 
 # Injection de code sous Windows #

@@ -1,7 +1,10 @@
-Titre:       Eh ! Hook moi ça !  
-Auteur:      Vincent Bouzon - b0l0k  
-Web:         http://www.c0ding.fr  
-Date:        18 juillet 2007
+---
+layout: post
+title: Eh ! Hook moi ça !
+author: Vincent Bouzon - b0l0k  
+tags : hooking hook asm injection windows
+date: 2007-07-18
+---
 
 # Eh ! Hook moi ça ! #
 Nous allons aborder dans cette article une manière de hooking dans le kernel-land qui à le mérite de ne pas touche directement le code de la fonction cible (comme le inline-hook ou le hot patching) et qui n’est pas facile à désactiver, je ne vais pas dire en plus … je vous laisse le soin de lire l’article.  
@@ -15,7 +18,7 @@ Je vais commencer par détaillez de la façon la plus simple possible le fonctio
 ## 1. Les registres de debug (DRx) ##
 Pour commencer il faut savoir qu’il existe deux vecteurs d’interruptions pour gérer les exceptions du au débogage : le vecteur 1 qui gère les exceptions de type #DB (debug exception) comme les nomme les inteliens (w00t de nom xD) et le vecteur qui gère les exceptions de type #BP (breakpoint exception).  
 
-Généralement les exceptions de type #DB (c’est celle dont je parlerai tout au long de l’article) sont généré par les options activés dans les registres de débogages et les exceptions de type #BP sont généré par l’interruption 3.  
+Généralement les exceptions de type #DB (c’est celle dont je parlerai tout au long de l’article) sont générées par les options activés dans les registres de débogages et les exceptions de type #BP sont générées par l’interruption 3.  
 
 Les registres de debug sont au nombre de 8, noté de DR0 à DR7.  
 

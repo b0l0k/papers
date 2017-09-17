@@ -1,7 +1,11 @@
-Titre:       De la réalité à la virtualité
-Auteur:      Vincent Bouzon - b0l0k  
-Web:         http://www.c0ding.fr  
-Date:        19 mai 2017
+---
+layout: post
+title: De la réalité à la virtualité
+author: Vincent Bouzon - b0l0k  
+tags : driver bluepill rootkit
+date: 2007-05-19
+---
+
 
 # De la réalité à la virtualité #
 
