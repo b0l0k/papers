@@ -92,7 +92,7 @@ J’ai déjà détaillé le hook de routine de gestion d’exception dans mon ar
 
 HookInt(0×01, (unsigned long)NewInt01, &OldDebugExceptionHandler);
 
-*Comment paramétrer notre breakpoint ?*
+### Comment paramétrer notre breakpoint ? ###
 ```assembly
 	mov eax, ZwCreateFile;
 	mov dr0, eax;
@@ -106,14 +106,14 @@ Dr0 => Adresse de l’instruction
 
 Dr7 => G0 = 1; GE = 1; GD = 1; R/W0 = 00; LEN0 = 00
 
-*Qu’est ce que doit faire notre routine ?*
+### Qu’est ce que doit faire notre routine ? ### 
 
 Les cas possibles :  
 * L’exception à été généré par la protection des registres DRx.
 * L’exception a été générée par notre breakpoint.
 * Sinon l’exception ne nous concerne pas.
 
-*Comment reconnaitre simplement ces cas ?*
+### Comment reconnaitre simplement ces cas ? ### 
 * L’exception à été généré par la protection des registres DRx : Le bit BD sera à 1 dans ce cas la.
 * L’exception a été générée par notre breakpoint : Le bit B0…B3 (celui correspondant à notre breakpoint) sera à 1 dans ce cas.
 * Donc le reste est à redirigé sur l’ancienne routine.  
