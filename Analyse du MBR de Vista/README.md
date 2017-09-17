@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Analyse du MBR de Vista
 author: Vincent Bouzon - b0l0k  
 tags : mbr vista asm tpm bitlocker

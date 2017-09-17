@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Injection de code sous Windows
 author: Vincent Bouzon - b0l0k  
 tags : injection windows

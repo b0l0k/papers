@@ -1,5 +1,4 @@
 ---
-layout: post
 title: De la réalité à la virtualité
 author: Vincent Bouzon - b0l0k  
 tags : driver bluepill rootkit

@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Eh ! Hook moi ça !
 author: Vincent Bouzon - b0l0k  
 tags : hooking hook asm injection windows
