@@ -1,8 +1,10 @@
-Titre:       Analyse du MBR de Vista
-Auteur:      Vincent Bouzon - b0l0k  
-Web:         http://www.c0ding.fr  
-Date:        01 août 2008
-
+---
+layout: post
+title: Analyse du MBR de Vista
+author: Vincent Bouzon - b0l0k  
+tags : mbr vista asm tpm bitlocker
+date: 2008-08-01
+---
 # Analyse du MBR de Vista #
 
 Encore penché sur Singularity, je tombe par hasard sur un article parlant de Bitlocker et plus particulièrement la protection apporté au niveau du boot.
