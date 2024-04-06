@@ -1,4 +1,4 @@
 # papers
 "Share your knowledge. It’s a way to achieve immortality." - Dalai Lama
 
-https://vbouzon.github.io/papers/
+https://b0l0k.github.io/papers/
